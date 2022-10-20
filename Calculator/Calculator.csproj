@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="icons8-clear-symbol-50.png" />
+    <None Remove="icons8-menu-30.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="icons8-clear-symbol-50.png" />
+    <Resource Include="icons8-menu-30.png" />
+  </ItemGroup>
+
+</Project>
