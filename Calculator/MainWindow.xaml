@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Calculator"
         mc:Ignorable="d"
-        Title="MainWindow" Height="540" Width="334">
+        Title="Calculator (beta)" Height="540" Width="334">
     <Window.Resources>
         <Style x:Key="FocusVisual">
             <Setter Property="Control.Template">
@@ -79,7 +79,8 @@
             <Label Canvas.Left="40"  Margin="5" FontSize="20" Content="Standart"/>
         </Canvas>
         <Canvas Grid.Row="1">
-            <Label x:Name="label_number" Grid.Row="1" Canvas.Bottom="5" Canvas.Right="5" Content="0" FontSize="32" FontWeight="Bold"></Label>
+            <Label x:Name="label_number" Canvas.Bottom="5" Canvas.Right="5" Content="0" FontSize="32" FontWeight="Bold"></Label>
+            <Label x:Name="label_cache" Canvas.Right="5" Canvas.Top="5" FontSize="20" Content="0" />
         </Canvas>
         <Canvas Grid.Row="2">
             <Button Canvas.Left="15" FontSize="20" Content="MC" Margin="5" Background="{x:Null}" BorderBrush="{x:Null}" IsEnabled="False" BorderThickness="0,0,0,0" Foreground="#FF838383"/>
@@ -106,31 +107,31 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
 
-                <Button Style="{DynamicResource RoundedBtn}" Margin="3" Background="#f0f0f0" Content="%" FontSize="26" FontWeight="Bold"  BorderThickness="0,0,0,0"/>
-                <Button Style="{DynamicResource RoundedBtn}" Margin="3" Background="#f0f0f0" Grid.Column="1" Content="CE" FontSize="26" BorderThickness="0,0,0,0" FontWeight="Bold"/>
-                <Button Style="{DynamicResource RoundedBtn}" Margin="3" Background="#f0f0f0" Grid.Column="2" Content="C" FontSize="26" BorderThickness="0,0,0,0" FontWeight="Bold"/>
-                <Button Style="{DynamicResource RoundedBtn}" Margin="3" Grid.Column="3" Background="#f0f0f0" BorderThickness="0,0,0,0" />
-                <Image Width="35" Grid.Column="3" Source="/icons8-clear-symbol-50.png"/>
-                <Button Style="{DynamicResource RoundedBtn}" Margin="3" Background="#f0f0f0" Grid.Row="1" Content="1/x" FontSize="26" BorderThickness="0,0,0,0" FontWeight="Bold"/>
-                <Button Style="{DynamicResource RoundedBtn}" Margin="3" Background="#f0f0f0" Grid.Row="1" Grid.Column="1" Content="x²" FontSize="26" BorderThickness="0,0,0,0" FontWeight="Bold"/>
-                <Button Style="{DynamicResource RoundedBtn}" Margin="3" Background="#f0f0f0" Grid.Row="1" Grid.Column="2" Content="²√x" FontSize="26" BorderThickness="0,0,0,0" FontWeight="Bold"/>
-                <Button Style="{DynamicResource RoundedBtn}" Margin="3" Background="#f0f0f0" Grid.Row="1" Grid.Column="3" Content="/" FontSize="26" BorderThickness="0,0,0,0" FontWeight="Bold"/>
+                <Button Style="{DynamicResource RoundedBtn}" Margin="3" Background="#f0f0f0" Content="%" FontSize="26" FontWeight="Bold"  BorderThickness="0,0,0,0" Click="Button_Click"/>
+                <Button Style="{DynamicResource RoundedBtn}" Margin="3" Background="#f0f0f0" Grid.Column="1" Content="CE" FontSize="26" BorderThickness="0,0,0,0" FontWeight="Bold" Click="Button_Click"/>
+                <Button Style="{DynamicResource RoundedBtn}" Margin="3" Background="#f0f0f0" Grid.Column="2" Content="C" FontSize="26" BorderThickness="0,0,0,0" FontWeight="Bold" Click="Button_Click"/>
+                <Button Style="{DynamicResource RoundedBtn}" Margin="3" Grid.Column="3" Tag="del" Background="#f0f0f0" BorderThickness="0,0,0,0" Click="Button_Click" />
+                <Image IsEnabled="False" Width="35" Grid.Column="3" Source="/icons8-clear-symbol-50.png"/>
+                <Button Style="{DynamicResource RoundedBtn}" Margin="3" Background="#f0f0f0" Grid.Row="1" Content="1/x" FontSize="26" BorderThickness="0,0,0,0" FontWeight="Bold" Click="Button_Click"/>
+                <Button Style="{DynamicResource RoundedBtn}" Margin="3" Background="#f0f0f0" Grid.Row="1" Grid.Column="1" Content="x²" FontSize="26" BorderThickness="0,0,0,0" FontWeight="Bold" Click="Button_Click"/>
+                <Button Style="{DynamicResource RoundedBtn}" Margin="3" Background="#f0f0f0" Grid.Row="1" Grid.Column="2" Content="²√x" FontSize="26" BorderThickness="0,0,0,0" FontWeight="Bold" Click="Button_Click"/>
+                <Button Style="{DynamicResource RoundedBtn}" Margin="3" Background="#f0f0f0" Grid.Row="1" Grid.Column="3" Content="/" FontSize="26" BorderThickness="0,0,0,0" FontWeight="Bold" Click="Button_Click"/>
                 <Button Style="{DynamicResource RoundedBtn}" Margin="3" Background="#f0f0f0" Grid.Row="2" Grid.Column="0" Content="7" FontSize="26" BorderThickness="0,0,0,0" FontWeight="Bold" Click="Button_Click"/>
                 <Button Style="{DynamicResource RoundedBtn}" Margin="3" Background="#f0f0f0" Grid.Row="2" Grid.Column="1" Content="8" FontSize="26" BorderThickness="0,0,0,0" FontWeight="Bold" Click="Button_Click"/>
                 <Button Style="{DynamicResource RoundedBtn}" Margin="3" Background="#f0f0f0" Grid.Row="2" Grid.Column="2" Content="9" FontSize="26" BorderThickness="0,0,0,0" FontWeight="Bold" Click="Button_Click"/>
-                <Button Style="{DynamicResource RoundedBtn}" Margin="3" Background="#f0f0f0" Grid.Row="2" Grid.Column="3" Content="x" FontSize="26" BorderThickness="0,0,0,0" FontWeight="Bold"/>
+                <Button Style="{DynamicResource RoundedBtn}" Margin="3" Background="#f0f0f0" Grid.Row="2" Grid.Column="3" Content="x" FontSize="26" BorderThickness="0,0,0,0" FontWeight="Bold" Click="Button_Click"/>
                 <Button Style="{DynamicResource RoundedBtn}" Margin="3" Background="#f0f0f0" Grid.Row="3" Grid.Column="0" Content="4" FontSize="26" BorderThickness="0,0,0,0" FontWeight="Bold" Click="Button_Click"/>
                 <Button Style="{DynamicResource RoundedBtn}" Margin="3" Background="#f0f0f0" Grid.Row="3" Grid.Column="1" Content="5" FontSize="26" BorderThickness="0,0,0,0" FontWeight="Bold" Click="Button_Click"/>
                 <Button Style="{DynamicResource RoundedBtn}" Margin="3" Background="#f0f0f0" Grid.Row="3" Grid.Column="2" Content="6" FontSize="26" BorderThickness="0,0,0,0" FontWeight="Bold" Click="Button_Click"/>
-                <Button Style="{DynamicResource RoundedBtn}" Margin="3" Background="#f0f0f0" Grid.Row="3" Grid.Column="3" Content="-" FontSize="26" BorderThickness="0,0,0,0" FontWeight="Bold"/>
+                <Button Style="{DynamicResource RoundedBtn}" Margin="3" Background="#f0f0f0" Grid.Row="3" Grid.Column="3" Content="-" FontSize="26" BorderThickness="0,0,0,0" FontWeight="Bold" Click="Button_Click"/>
                 <Button Style="{DynamicResource RoundedBtn}" Margin="3" Background="#f0f0f0" Grid.Row="4" Grid.Column="0" Content="1" FontSize="26" BorderThickness="0,0,0,0" FontWeight="Bold" Click="Button_Click"/>
                 <Button Style="{DynamicResource RoundedBtn}" Margin="3" Background="#f0f0f0" Grid.Row="4" Grid.Column="1" Content="2" FontSize="26" BorderThickness="0,0,0,0" FontWeight="Bold" Click="Button_Click"/>
                 <Button Style="{DynamicResource RoundedBtn}" Margin="3" Background="#f0f0f0" Grid.Row="4" Grid.Column="2" Content="3" FontSize="26" BorderThickness="0,0,0,0" FontWeight="Bold" Click="Button_Click"/>
-                <Button Style="{DynamicResource RoundedBtn}" Margin="3" Background="#f0f0f0" Grid.Row="4" Grid.Column="3" Content="+" FontSize="26" BorderThickness="0,0,0,0" FontWeight="Bold"/>
-                <Button Style="{DynamicResource RoundedBtn}" Margin="3" Background="#f0f0f0" Grid.Row="5" Grid.Column="0" Content="+/-" FontSize="26" BorderThickness="0,0,0,0" FontWeight="Bold"/>
-                <Button Style="{DynamicResource RoundedBtn}" Margin="3" Background="#f0f0f0" Grid.Row="5" Grid.Column="1" Content="0" FontSize="26" BorderThickness="0,0,0,0" FontWeight="Bold"/>
-                <Button Style="{DynamicResource RoundedBtn}" Margin="3" Background="#f0f0f0" Grid.Row="5" Grid.Column="2" Content="," FontSize="26" BorderThickness="0,0,0,0" FontWeight="Bold"/>
-                <Button Style="{DynamicResource RoundedBtn}" Margin="3" Background="#f0f0f0" Grid.Row="5" Grid.Column="3" Content="=" FontSize="26" BorderThickness="0,0,0,0" FontWeight="Bold"/>
+                <Button Style="{DynamicResource RoundedBtn}" Margin="3" Background="#f0f0f0" Grid.Row="4" Grid.Column="3" Content="+" FontSize="26" BorderThickness="0,0,0,0" FontWeight="Bold" Click="Button_Click"/>
+                <Button Style="{DynamicResource RoundedBtn}" Margin="3" Background="#f0f0f0" Grid.Row="5" Grid.Column="0" Content="+/-" FontSize="26" BorderThickness="0,0,0,0" FontWeight="Bold" Click="Button_Click"/>
+                <Button Style="{DynamicResource RoundedBtn}" Margin="3" Background="#f0f0f0" Grid.Row="5" Grid.Column="1" Content="0" FontSize="26" BorderThickness="0,0,0,0" FontWeight="Bold" Click="Button_Click"/>
+                <Button Style="{DynamicResource RoundedBtn}" Margin="3" Background="#f0f0f0" Grid.Row="5" Grid.Column="2" Content="," FontSize="26" BorderThickness="0,0,0,0" FontWeight="Bold" Click="Button_Click"/>
+                <Button Style="{DynamicResource RoundedBtn}" Margin="3" Background="#f0f0f0" Grid.Row="5" Grid.Column="3" Content="=" FontSize="26" BorderThickness="0,0,0,0" FontWeight="Bold" Click="Button_Click"/>
             </Grid>
         </DockPanel>
     </Grid>
