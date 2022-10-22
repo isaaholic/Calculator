@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -9,6 +10,7 @@ namespace Calculator
     /// </summary>
     public partial class MainWindow : Window
     {
+        private string _cacheNum = "";
         public MainWindow()
         {
             InitializeComponent();
@@ -16,69 +18,50 @@ namespace Calculator
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is Button button && label_number.Content.ToString()?.Length < 16)
+            if (sender is Button button)
+            {
                 switch (button.Content)
                 {
                     case "0":
-                        if (!(label_number.Content.ToString() == "0"))
-                            label_number.Content += "0";
-                        break;
                     case "1":
-                        if (label_number.Content.ToString() == "0")
-                            label_number.Content = "1";
-                        else label_number.Content += "1";
-                        break;
                     case "2":
-                        if (label_number.Content.ToString() == "0")
-                            label_number.Content = "2";
-                        else label_number.Content += "2";
-                        break;
                     case "3":
-                        if (label_number.Content.ToString() == "0")
-                            label_number.Content = "3";
-                        else label_number.Content += "3";
-                        break;
                     case "4":
-                        if (label_number.Content.ToString() == "0")
-                            label_number.Content = "4";
-                        else label_number.Content += "4";
-                        break;
                     case "5":
-                        if (label_number.Content.ToString() == "0")
-                            label_number.Content = "5";
-                        else label_number.Content += "5";
-                        break;
                     case "6":
-                        if (label_number.Content.ToString() == "0")
-                            label_number.Content = "6";
-                        else label_number.Content += "6";
-                        break;
                     case "7":
-                        if (label_number.Content.ToString() == "0")
-                            label_number.Content = "7";
-                        else label_number.Content += "7";
-                        break;
                     case "8":
-                        if (label_number.Content.ToString() == "0")
-                            label_number.Content = "8";
-                        else label_number.Content += "8";
-                        break;
                     case "9":
-                        if (label_number.Content.ToString() == "0")
-                            label_number.Content = "9";
-                        else label_number.Content += "9";
+                        if (label_number.Content.ToString()?.Length < 16)
+                        {
+                            if (label_number.Content.ToString() == "0")
+                                label_number.Content = (string)button.Content;
+                            else label_number.Content += (string)button.Content;
+                        }
                         break;
                     case "%":
+                        label_number.Content = (double.Parse((string)label_number.Content) / 100).ToString();
                         break;
                     case "CE":
+                        if (((string)label_cache.Content).Contains("="))
+                            label_cache.Content = "0";
+                        label_number.Content = "0";
                         break;
                     case "C":
+                        label_number.Content = "0";
+                        label_cache.Content = "0";
                         break;
                     case "1/x":
+                        label_number.Content = (1 / double.Parse((string)label_number.Content)).ToString("F14");
+                        Fix();
                         break;
                     case "x²":
+                        label_number.Content = Math.Pow(double.Parse((string)label_number.Content), 2).ToString("F14");
+                        Fix();
                         break;
                     case "²√x":
+                        label_number.Content = Math.Sqrt(double.Parse((string)label_number.Content)).ToString("F14");
+                        Fix();
                         break;
                     case "/":
                         AddOperator("/");
@@ -93,72 +76,160 @@ namespace Calculator
                         AddOperator("+");
                         break;
                     case "+/-":
+                        label_number.Content = (-(int.Parse((string)label_number.Content))).ToString();
                         break;
                     case ",":
+                        if (((string)label_number.Content).Contains(','))
+                            break;
+                        label_number.Content += ",";
                         break;
                     case "=":
-                        EqualOperation();
+                        if (label_number.Content.ToString()?.Length < 16)
+                            EqualOperation();
                         break;
                     default:
                         if ((string)button.Tag == "del")
-                            break;
+                        {
+
+                            if (((string)label_number.Content).Length > 1)
+                                label_number.Content = ((string)label_number.Content).Remove(((string)label_number.Content).Length - 1, 1);
+                            else if (((string)label_number.Content).Length == 0 || ((string)label_number.Content).Length == 1)
+                                label_number.Content = "0";
+                        }
                         break;
                 }
+            }
         }
-        bool HasOperation()
+
+        private void Fix()
+        {
+            int f = 14;
+            for (int i = ((string)label_number.Content).Length - 1; i >= 0; i--)
+            {
+                if (((string)label_number.Content).Contains(',') && ((string)label_number.Content)[i] == '0')
+                    label_number.Content = (double.Parse((string)label_number.Content)).ToString($"F{--f}");
+                else break;
+            }
+        }
+
+        private bool HasOperation()
         {
             if (((string)label_cache.Content).Last() == '+' || ((string)label_cache.Content).Last() == '-' || ((string)label_cache.Content).Last() == 'x' || ((string)label_cache.Content).Last() == '/')
                 return true;
             return false;
         }
 
-        bool HasEqual()
+        private bool HasEqual()
         {
             if (((string)label_cache.Content).Last() == '=')
                 return true;
             return false;
         }
 
-        void EqualOperation()
+        private void EqualOperation()
         {
             string firstOp = "";
             if (!HasEqual())
             {
                 int i;
-                for (i = 0; i < ((string)label_cache.Content).Length; i++)
+                int k = 0;
+                if (((string)label_cache.Content).First() == '-')
+                {
+                    firstOp += "-";
+                    k = 1;
+                }
+                for (i = k; i < ((string)label_cache.Content).Length; i++)
                 {
                     if (int.TryParse(((string)label_cache.Content)[i].ToString(), out _))
                         firstOp += ((string)label_cache.Content)[i];
+                    else if (((string)label_cache.Content)[i].ToString() == ",")
+                        firstOp += ",";
                     else break;
                 }
+                _cacheNum = (string)label_number.Content;
                 switch (((string)label_cache.Content)[i])
                 {
                     case '+':
-                        label_cache.Content += (string)label_number.Content;
-                        label_number.Content = (int.Parse(firstOp) + int.Parse((string)label_number.Content)).ToString();
+                        label_cache.Content += (string)label_number.Content + "=";
+                        label_number.Content = (double.Parse(firstOp) + double.Parse((string)label_number.Content)).ToString("F14");
                         break;
                     case '-':
-                        label_cache.Content += (string)label_number.Content;
-                        label_number.Content = (int.Parse(firstOp) - int.Parse((string)label_number.Content)).ToString();
+                        label_cache.Content += (string)label_number.Content + "=";
+                        label_number.Content = (double.Parse(firstOp) - double.Parse((string)label_number.Content)).ToString("F14");
                         break;
                     case 'x':
-                        label_cache.Content += (string)label_number.Content;
-                        label_number.Content = (int.Parse(firstOp) * int.Parse((string)label_number.Content)).ToString();
+                        label_cache.Content += (string)label_number.Content + "=";
+                        label_number.Content = (double.Parse(firstOp) * double.Parse((string)label_number.Content)).ToString("F14");
                         break;
                     case '/':
-                        label_cache.Content += (string)label_number.Content;
-                        label_number.Content = (int.Parse(firstOp) / int.Parse((string)label_number.Content)).ToString();
+                        label_cache.Content += (string)label_number.Content+"=";
+                        if (!((double.Parse(firstOp) / double.Parse((string)label_number.Content)).ToString("F14") == "∞"|| !((double.Parse(firstOp) / double.Parse((string)label_number.Content)).ToString("F14") == "-∞")))
+                            label_number.Content = (double.Parse(firstOp) / double.Parse((string)label_number.Content)).ToString("F14");
+                        else
+                        {
+                            MessageBox.Show("Cannot divide by zero");
+                            _cacheNum = "";
+                            label_cache.Content = "0";
+                            label_number.Content = "0";
+                        }
                         break;
                 }
-                label_cache.Content += "=";
+                Fix();
             }
             else
             {
-              
+                int i;
+                int k = 0;
+                if (((string)label_number.Content).First() == '-')
+                {
+                    firstOp += "-";
+                    k = 1;
+                }
+
+                for (i = k; i < ((string)label_cache.Content).Length; i++)
+                {
+                    if (int.TryParse(((string)label_cache.Content)[i].ToString(), out _))
+                        continue;
+                    else if (((string)label_cache.Content)[i].ToString() == ",")
+                        continue;
+                    else break;
+                }
+                label_cache.Content = label_number.Content + ((string)label_cache.Content)[i].ToString();
+
+                for (i = k; i < ((string)label_cache.Content).Length; i++)
+                {
+                    if (int.TryParse(((string)label_cache.Content)[i].ToString(), out _))
+                        firstOp += ((string)label_cache.Content)[i];
+                    else if (((string)label_cache.Content)[i].ToString() == ",")
+                        firstOp += ",";
+                    else break;
+                }
+
+                switch (((string)label_cache.Content)[i])
+                {
+                    case '+':
+                        label_cache.Content += _cacheNum;
+                        label_number.Content = (double.Parse(firstOp) + double.Parse(_cacheNum)).ToString("F14");
+                        break;
+                    case '-':
+                        label_cache.Content += _cacheNum;
+                        label_number.Content = (double.Parse(firstOp) - double.Parse(_cacheNum)).ToString("F14");
+                        break;
+                    case 'x':
+                        label_cache.Content += _cacheNum;
+                        label_number.Content = (double.Parse(firstOp) * double.Parse(_cacheNum)).ToString("F14");
+                        break;
+                    case '/':
+                        label_cache.Content += _cacheNum;
+                        label_number.Content = (double.Parse(firstOp) / double.Parse(_cacheNum)).ToString("F14");
+                        break;
+                }
+                Fix();
+                label_cache.Content += "=";
             }
         }
 
-        void AddOperator(string op)
+        private void AddOperator(string op)
         {
             if (HasEqual())
             {
