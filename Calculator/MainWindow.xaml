@@ -18,7 +18,7 @@
         </Style>
         <SolidColorBrush x:Key="Button.Static.Background" Color="#FFDDDDDD"/>
         <SolidColorBrush x:Key="Button.Static.Border" Color="#FF707070"/>
-        <SolidColorBrush x:Key="Button.MouseOver.Background" Color="#FFBEE6FD"/>
+        <SolidColorBrush x:Key="Button.MouseOver.Background" Color="#d3d1d1"/>
         <SolidColorBrush x:Key="Button.MouseOver.Border" Color="#FF3C7FB1"/>
         <SolidColorBrush x:Key="Button.Pressed.Background" Color="#FFC4E5F6"/>
         <SolidColorBrush x:Key="Button.Pressed.Border" Color="#FF2C628B"/>
@@ -83,12 +83,11 @@
             <Label x:Name="label_cache" Canvas.Right="5" Canvas.Top="5" FontSize="20" Content="0" />
         </Canvas>
         <Canvas Grid.Row="2">
-            <Button Canvas.Left="15" FontSize="20" Content="MC" Margin="5" Background="{x:Null}" BorderBrush="{x:Null}" IsEnabled="False" BorderThickness="0,0,0,0" Foreground="#FF838383"/>
-            <Button Canvas.Left="65" FontSize="20" Content="MR" Margin="5" Background="{x:Null}" BorderBrush="{x:Null}" IsEnabled="False"  BorderThickness="0,0,0,0"></Button>
-            <Button Canvas.Left="115" FontSize="20" Content="M+" Margin="5" Background="{x:Null}" BorderBrush="{x:Null}" IsEnabled="False" BorderThickness="0,0,0,0"></Button>
-            <Button Canvas.Left="165" FontSize="20" Content="M-" Margin="5" Background="{x:Null}" BorderBrush="{x:Null}" IsEnabled="False" BorderThickness="0,0,0,0"></Button>
-            <Button Canvas.Left="215" FontSize="20" Content="MS" Margin="5" Background="{x:Null}" BorderBrush="{x:Null}" IsEnabled="False" BorderThickness="0,0,0,0"></Button>
-            <Button Canvas.Left="265" FontSize="20" Content="M⬇️" Margin="5" Background="{x:Null}" BorderBrush="{x:Null}" IsEnabled="False" BorderThickness="0,0,0,0"></Button>
+            <Button Style="{DynamicResource RoundedBtn}" Canvas.Left="35" FontSize="20" x:Name="mc" Content="MC" Margin="5" Background="{x:Null}" BorderBrush="{x:Null}" IsEnabled="False" BorderThickness="0,0,0,0" Click="Button_Click_Memory"/>
+            <Button Style="{DynamicResource RoundedBtn}" Canvas.Left="85" FontSize="20" x:Name="mr" Content="MR" Margin="5" Background="{x:Null}" BorderBrush="{x:Null}" IsEnabled="False"  BorderThickness="0,0,0,0" Click="Button_Click_Memory"></Button>
+            <Button Style="{DynamicResource RoundedBtn}" Canvas.Left="135" FontSize="20" x:Name="mp" Content="M+" Margin="5" Background="{x:Null}" BorderBrush="{x:Null}" IsEnabled="True" BorderThickness="0,0,0,0" Click="Button_Click_Memory"></Button>
+            <Button Style="{DynamicResource RoundedBtn}" Canvas.Left="185" FontSize="20" x:Name="mn" Content="M-" Margin="5" Background="{x:Null}" BorderBrush="{x:Null}" IsEnabled="True" BorderThickness="0,0,0,0" Click="Button_Click_Memory"></Button>
+            <Button Style="{DynamicResource RoundedBtn}" Canvas.Left="235" FontSize="20" x:Name="ms" Content="MS" Margin="5" Background="{x:Null}" BorderBrush="{x:Null}" IsEnabled="True" BorderThickness="0,0,0,0" Click="Button_Click_Memory"></Button>
         </Canvas>
         <DockPanel Grid.Row="3">
             <Grid>

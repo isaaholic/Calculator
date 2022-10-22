@@ -11,6 +11,7 @@ namespace Calculator
     public partial class MainWindow : Window
     {
         private string _cacheNum = "";
+        private string _memoryNum = "0";
         public MainWindow()
         {
             InitializeComponent();
@@ -128,6 +129,8 @@ namespace Calculator
 
         private void EqualOperation()
         {
+            if ((string)label_cache.Content == "0")
+                return;
             string firstOp = "";
             if (!HasEqual())
             {
@@ -137,6 +140,10 @@ namespace Calculator
                 {
                     firstOp += "-";
                     k = 1;
+                }
+                if (((string)label_number.Content).Last() == ',')
+                {
+                    label_number.Content = ((string)label_number.Content).Remove(((string)label_number.Content).Length - 1, 1);
                 }
                 for (i = k; i < ((string)label_cache.Content).Length; i++)
                 {
@@ -162,8 +169,8 @@ namespace Calculator
                         label_number.Content = (double.Parse(firstOp) * double.Parse((string)label_number.Content)).ToString("F14");
                         break;
                     case '/':
-                        label_cache.Content += (string)label_number.Content+"=";
-                        if (!((double.Parse(firstOp) / double.Parse((string)label_number.Content)).ToString("F14") == "∞"|| !((double.Parse(firstOp) / double.Parse((string)label_number.Content)).ToString("F14") == "-∞")))
+                        label_cache.Content += (string)label_number.Content + "=";
+                        if (!((double.Parse(firstOp) / double.Parse((string)label_number.Content)).ToString("F14") == "∞" || !((double.Parse(firstOp) / double.Parse((string)label_number.Content)).ToString("F14") == "-∞")))
                             label_number.Content = (double.Parse(firstOp) / double.Parse((string)label_number.Content)).ToString("F14");
                         else
                         {
@@ -251,11 +258,65 @@ namespace Calculator
             }
             else if (!(label_number.Content.ToString() == "0"))
             {
+                if (((string)label_number.Content).Last() == ',')
+                    label_number.Content = ((string)label_number.Content).Remove(((string)label_number.Content).Length - 1, 1);
                 label_cache.Content = (string)label_number.Content;
                 label_number.Content = "0";
                 AddOperator(op);
             }
 
+        }
+
+        private void Button_Click_Memory(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button)
+            {
+                switch (button.Content)
+                {
+                    case "M+":
+                        if (!mc.IsEnabled && (string)label_number.Content != "0")
+                        {
+                            mc.IsEnabled = true;
+                            mr.IsEnabled = true;
+                            ms.IsEnabled = true;
+                        }
+                        _memoryNum = (double.Parse(_memoryNum) + double.Parse((string)label_number.Content)).ToString();
+                        label_number.Content = 0;
+                        label_cache.Content = 0;
+                        break;
+                    case "M-":
+                        if (!mc.IsEnabled && (string)label_number.Content != "0")
+                        {
+                            mc.IsEnabled = true;
+                            mr.IsEnabled = true;
+                            ms.IsEnabled = true;
+                        }
+                        _memoryNum = (double.Parse(_memoryNum) - double.Parse((string)label_number.Content)).ToString();
+                        label_number.Content = 0;
+                        label_cache.Content = 0;
+                        break;
+                    case "MR":
+                        label_number.Content = _memoryNum;
+                        break;
+                    case "MC":
+                        label_number.Content = 0;
+                        _memoryNum = "0";
+                        mc.IsEnabled = false;
+                        mr.IsEnabled = false;
+                        ms.IsEnabled = false;
+                        break;
+                    case "MS":
+                        if (!mc.IsEnabled && (string)label_number.Content != "0")
+                        {
+                            mc.IsEnabled = true;
+                            mr.IsEnabled = true;
+                            ms.IsEnabled = true;
+                        }
+                        _memoryNum = (string)label_number.Content;
+                        label_cache.Content = 0;
+                        break;
+                }
+            }
         }
     }
 }
