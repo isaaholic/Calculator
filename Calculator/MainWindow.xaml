@@ -5,6 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Calculator"
         mc:Ignorable="d"
+        MinHeight="540"
+        MinWidth="334"
         Title="Calculator (beta)" Height="540" Width="334">
     <Window.Resources>
         <Style x:Key="FocusVisual">
