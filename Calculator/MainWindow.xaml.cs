@@ -264,7 +264,6 @@ namespace Calculator
                 label_number.Content = "0";
                 AddOperator(op);
             }
-
         }
 
         private void Button_Click_Memory(object sender, RoutedEventArgs e)
