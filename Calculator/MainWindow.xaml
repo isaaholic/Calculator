@@ -73,7 +73,7 @@
         <Canvas Grid.Row="0">
             <Label Canvas.Left="5" Margin="10" Height="19" Width="26" Canvas.Top="5">
                 <Label.Background>
-                    <ImageBrush ImageSource="/icons8-menu-30.png" Stretch="UniformToFill" TileMode="FlipX"/>
+                    <ImageBrush ImageSource="/icons8-menu-30.png" Stretch="UniformToFill"/>
                 </Label.Background>
             </Label>
             <Label Canvas.Left="40"  Margin="5" FontSize="20" Content="Standart"/>
